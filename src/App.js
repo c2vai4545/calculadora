@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -6,6 +6,64 @@ function App() {
   const [prevValue, setPrevValue] = useState(null);
   const [operator, setOperator] = useState(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const key = event.key;
+      
+      // Números y punto decimal
+      if (/^[0-9]$/.test(key)) {
+        inputDigit(parseInt(key));
+      } else if (key === '.') {
+        inputDecimal();
+      }
+      
+      // Operadores
+      switch (key) {
+        case '+':
+          handleOperator('+');
+          break;
+        case '-':
+          handleOperator('-');
+          break;
+        case '*':
+          handleOperator('×');
+          break;
+        case '/':
+          event.preventDefault(); // Prevenir el quick find en Firefox
+          handleOperator('÷');
+          break;
+        case 'Enter':
+        case '=':
+          handleEquals();
+          break;
+        case 'Backspace':
+          handleBackspace();
+          break;
+        case 'Escape':
+          clearDisplay();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [display, waitingForOperand, operator, prevValue]);
+
+  // Nueva función para manejar el retroceso
+  const handleBackspace = () => {
+    if (waitingForOperand) return;
+    
+    if (display.length > 1) {
+      setDisplay(display.slice(0, -1));
+    } else {
+      setDisplay('0');
+    }
+  };
 
   const inputDigit = (digit) => {
     if (waitingForOperand) {

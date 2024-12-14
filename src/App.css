@@ -57,7 +57,7 @@ body {
   cursor: pointer;
   color: white;
   font-weight: 400;
-  transition: filter 0.1s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,15 +66,24 @@ body {
 .number {
   background-color: #333333;
 }
+.number:hover {
+  background-color: #666666;
+}
 
 .operator {
   background-color: #ff9f0a;
   font-size: 40px;
 }
+.operator:hover {
+  background-color: #ffb94a;
+}
 
 .function {
   background-color: #a5a5a5;
   color: black;
+}
+.function:hover {
+  background-color: #d4d4d4;
 }
 
 .zero {
@@ -86,6 +95,7 @@ body {
 }
 
 .key:active {
+  transform: scale(0.95);
   filter: brightness(130%);
 }
 
